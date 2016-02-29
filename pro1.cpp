@@ -12,7 +12,7 @@
 using namespace cv;
 using namespace std;
 cv::Mat image=imread("ps1.jpg",1);
-int valid(int x,int y)
+int valid(int x,int y)        //function to check validity of point
 {
 if(x<image.rows&&y<image.cols&&x>=0&&y>=0)
 return 1;
@@ -23,13 +23,13 @@ void def(int visit[][200],int xr,int yr,int xg,int yg)
 {
 
 int i,j,count=0;
-int flag[200][200];
+int flag[200][200];  //to store if point is visited
 for(i=0;i<200;i++)
 for(j=0;j<200;j++)
 flag[i][j]=0;
 queue<int> x;
 queue<int> y;
-x.push(xr);
+x.push(xr);  
 y.push(yr);
 visit[x.front()][y.front()]=0;
 while(!x.empty())
@@ -77,7 +77,7 @@ sumy=sumy+j;
 }
 }
 }
-sumx=sumx/count;
+sumx=sumx/count;  //x coordinate of red circle
 sumy=sumy/count;
 
 count=0;
@@ -94,19 +94,19 @@ sumy1=sumy1+j;
 }
 }
 }
-sumx1/=count;
+sumx1/=count;   //x coordinate of green circle
 sumy1/=count;
 int visited[200][200];
 for(i=0;i<200;i++)
 {
 for(j=0;j<200;j++)
 {
-visited[i][j]=1000;
+visited[i][j]=1000;   //array to store distance and initial distance is set to 1000(infinity)
 }}
 def(visited,sumx,sumy,sumx1,sumy1);
 ros::init(argc, argv, "talker");
 ros::NodeHandle n;
-ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);  //instead of path,name of my topic is chatter
 ros::Rate loop_rate(10);
 i=sumx1;j=sumy1;
 
@@ -116,7 +116,7 @@ while(visited[i][j]!=0)
 std_msgs::String msg;
 
     std::stringstream ss;
-    ss <<i<<" "<<j<<" ";
+    ss <<i<<" "<<j<<" ";   //sending msg as string
     msg.data = ss.str();
  chatter_pub.publish(msg);
  ros::spinOnce();
@@ -125,7 +125,7 @@ std_msgs::String msg;
 //image.at<Vec3b>(i,j).val[0]=255;
 //image.at<Vec3b>(i,j).val[1]=255;
 //image.at<Vec3b>(i,j).val[2]=255;
-if(visited[i+1][j+1]==(visited[i][j]-1))
+if(visited[i+1][j+1]==(visited[i][j]-1))    //tracing back to initial node
 {i++;j++;}
 else if(visited[i+1][j-1]==(visited[i][j]-1))
 {i++;j--;}
