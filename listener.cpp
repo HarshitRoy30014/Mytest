@@ -16,7 +16,7 @@ int y;
 } corr[200];
 cv::Mat image=imread("ps1.jpg",1);
 
-void fuc(int x,int y)
+void fuc(int x,int y)  //fuction for changing path point into blue and displaying them
 {
 
 image.at<Vec3b>(x,y).val[0]=255;
@@ -24,8 +24,8 @@ image.at<Vec3b>(x,y).val[1]=0;
 image.at<Vec3b>(x,y).val[2]=0; 
 imshow( "Display window1", image );  
 }
-void chatterCallback(const std_msgs::String::ConstPtr& msg)
-{
+void chatterCallback(const std_msgs::String::ConstPtr& msg)  //i have taken input as string
+{                                                              //extracting x and y coordinate from string message
  //ROS_INFO("I heard: [%s]", msg->data.c_str());
 
 int i=0;int x=0;char c;int y=0; 
@@ -77,7 +77,7 @@ else if(c=='9')
 y=y*10+9;
 }while(c!=' ');
 
-fuc(x,y);
+fuc(x,y);  
             
 }
 
