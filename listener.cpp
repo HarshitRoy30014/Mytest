@@ -6,6 +6,7 @@
 #include <opencv2/highgui/highgui.hpp>
 //#include "geometry_msgs/Point32.msg"
 #include "std_msgs/String.h"
+#include <sstream>
 using namespace cv;
 using namespace std;
 struct point
@@ -17,17 +18,17 @@ cv::Mat image=imread("ps1.jpg",1);
 
 void fuc(int x,int y)
 {
+
 image.at<Vec3b>(x,y).val[0]=255;
 image.at<Vec3b>(x,y).val[1]=0;
-image.at<Vec3b>(x,y).val[2]=0;
-cv::namedWindow( "Display window1", CV_WINDOW_AUTOSIZE );// Create a window for display.
-cv::imshow( "Display window1", image ); 
+image.at<Vec3b>(x,y).val[2]=0; 
+imshow( "Display window1", image );  
 }
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
  //ROS_INFO("I heard: [%s]", msg->data.c_str());
 
-int i=0;int x=0;char c;int y=0;static int count=0;
+int i=0;int x=0;char c;int y=0; 
 do{
  c= msg->data.c_str()[i++];
 if(c=='0')
@@ -75,23 +76,22 @@ y=y*10+8;
 else if(c=='9')
 y=y*10+9;
 }while(c!=' ');
-ROS_INFO("%d  %d",x,y);
-//fuc(x,y);
-/*corr[count].x=x;
-corr[count].y=y;
-  count++;             
-*/
+
+fuc(x,y);
+            
 }
 
 int main(int argc, char **argv)
 {
+namedWindow( "Display window1", CV_WINDOW_AUTOSIZE );// Create a window for display.
+cvStartWindowThread();
 ros::init(argc, argv, "listener");
 ros::NodeHandle n;
 ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
  ros::spin();
+ cv::destroyWindow("Display window1");
+//imshow("Display window1",image);
 
-
-//cv::waitKey(0);
   return 0;
 }
 
